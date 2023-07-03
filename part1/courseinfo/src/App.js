@@ -13,37 +13,54 @@ const Part = (param) => {
 }
 
 const Content = (param) => {
-  const param1 = param.content[0]
-  const param2 = param.content[1]
-  const param3 = param.content[2]
+  const param1 = param.parts[0]
+  const param2 = param.parts[1]
+  const param3 = param.parts[2]
   return (
     <div>
-      <Part part={param1.part} exercises={param1.exercises} />
-      <Part part={param2.part} exercises={param2.exercises} />
-      <Part part={param3.part} exercises={param3.exercises} />
+      <Part part={param1.name} exercises={param1.exercises} />
+      <Part part={param2.name} exercises={param2.exercises} />
+      <Part part={param3.name} exercises={param3.exercises} />
     </div>
   )
 }
 
 const Total = (param) => {
+  let sum = 0
+  param.parts.forEach(p => {
+    sum += p.exercises
+  })
+
   return (
-    <p>Number of exercises {param.total}</p>
+    <p>Number of exercises {sum}</p>
   )
 }
 
 const App = () => {
-  const course = 'Half Stack application development'
-  const content = [{ part: 'Fundamentals of React', exercises: 10 }, { part: 'Using props to pass data', exercises: 7 }, { part: 'State of a component', exercises: 14 }]
-  let total = 0;
-  content.map(item => (
-    total += item.exercises
-  ))
+  const course = {
+    name: 'Half Stack application development',
+    parts: [
+      {
+        name: 'Fundamentals of React',
+        exercises: 10
+      },
+      {
+        name: 'Using props to pass data',
+        exercises: 7
+      },
+      {
+        name: 'State of a component',
+        exercises: 14
+      }
+    ]
+  }
+
 
   return (
     <div>
-      <Header course={course} />
-      <Content content={content} />
-      <Total total={total} />
+      <Header course={course.name} />
+      <Content parts={course.parts} />
+      <Total parts={course.parts} />
     </div>
   )
 }
