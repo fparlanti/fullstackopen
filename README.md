@@ -6,6 +6,16 @@ sequenceDiagram
     participant browser
     participant server
 
+    Note right of the browser: The user writes the note name in the form field and clicks the submit button
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    activate server
+    Note right of the server: The server responds with status code 302. The response is a redirection URL 
+    server-->>browser: URL /exampleapp/notes
+    deactivate server
+
+    Note right of the browser: The browser reloads the notes page and then reloads main.ss, main.js and data.json
+
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
     activate server
     server-->>browser: HTML document
@@ -21,7 +31,6 @@ sequenceDiagram
     server-->>browser: the JavaScript file
     deactivate server
 
-    Note right of the browser: The browser starts executing the JavaScript code that fetches the JSON from the server
 
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
     activate server
