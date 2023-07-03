@@ -29,4 +29,4 @@ sequenceDiagram
     deactivate server
 
     Note right of the browser: The browser executes the callback function that renders the notes
-``
+```
