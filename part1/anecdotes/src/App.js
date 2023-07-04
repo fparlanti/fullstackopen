@@ -1,17 +1,27 @@
 import { useState } from 'react'
 
-const MostVotesAnecdote = ({anecdotes, votes}) => {
+const MostVotesAnecdote = ({ anecdotes, votes }) => {
 
-	const max = votes.indexOf(Math.max(...votes))
-	console.log(votes)
-	console.log(Math.max(...votes))
-	console.log(max)
+	const max = Math.max(...votes)
+	const maxIndex = votes.indexOf(max)
 
-	return (
-		<p>
-			{anecdotes[max]}
-		</p>
-	)
+	if (max === 0) {
+		return (
+			<div></div>
+		)
+	} else {
+		return (
+			<div>
+				<h1>Anecdote with most votes</h1>
+				<p>
+					{anecdotes[maxIndex]}
+				</p>
+				<p>
+					has {max} votes
+				</p>
+			</div>
+		)
+	}
 }
 
 const App = () => {
@@ -55,11 +65,8 @@ const App = () => {
 				<button onClick={handlerNewAnecdote}>new anecdote</button>
 			</div>
 
-			<div>
-				<h1>Anecdote with most votes</h1>
-				<MostVotesAnecdote anecdotes={anecdotes} votes={points} />
-			</div>
-		</div>
+			<MostVotesAnecdote anecdotes={anecdotes} votes={points} />
+		</div >
 	)
 }
 
