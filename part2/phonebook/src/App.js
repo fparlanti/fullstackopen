@@ -9,7 +9,7 @@ const Filter = ({ handler, search }) => {
   )
 }
 
-const PersonForm = ({ persons, setPersons }) => {
+const PersonForm = ({ persons, setPersons, setMessageText, setMessageType }) => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
 
@@ -24,10 +24,17 @@ const PersonForm = ({ persons, setPersons }) => {
         personService
           .update(id, changedPerson)
           .then(response => {
+            setMessageType(1)
+            setMessageText(`Number of ${changedPerson.name} modified`)
+            setTimeout(() => { setMessageText(null) }, 5000
+            )
             setPersons(persons.map(person => person.id != id ? person : changedPerson))
           })
           .catch(error => {
-            alert('Error updating  phonebook entry')
+            setMessageType(0)
+            setMessageText(`Error updating the phone number of ${changedPerson.name} `)
+            setTimeout(() => { setMessageText(null) }, 5000
+            )
           })
       }
     } else {
@@ -36,12 +43,17 @@ const PersonForm = ({ persons, setPersons }) => {
       personService
         .create(newPerson)
         .then(returnedNotes => {
+          setMessageType(1)
+          setMessageText(`Added ${newPerson.name}`)
+          setTimeout(() => { setMessageText(null) }, 5000)
           setPersons(persons.concat(returnedNotes))
           setNewName('')
           setNewNumber('')
         })
         .catch(error => {
-          alert('Error adding new phonebook entry')
+          setMessageType(0)
+          setMessageText(`Error adding new phone entry from server`)
+          setTimeout(() => { setMessageText(null) }, 5000)
         })
 
     }
@@ -85,9 +97,44 @@ const Persons = (props) => {
   )
 }
 
+const Notification = ({ message, type }) => {
+  let messageStyle = {
+    color: 'green',
+    background: 'lightgrey',
+    fontSize: '20px',
+    borderStyle: 'solid',
+    borderRadius: '5px',
+    padding: '10px',
+    marginBottom: '10px'
+  }
+  if (type == 0) {
+    messageStyle = {
+      color: 'red',
+      background: 'lightgrey',
+      fontSize: '20px',
+      borderStyle: 'solid',
+      borderRadius: '5px',
+      padding: '10px',
+      marginBottom: '10px'
+    }
+  }
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div style={messageStyle}>
+      {message}
+    </div>
+  )
+
+}
+
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newSearch, setNewSearch] = useState('')
+  const [messageText, setMessageText] = useState(null)
+  const [messageType, setMessageType] = useState(0)   //0=error, 1=successfull
 
   useEffect(() => {
     personService
@@ -103,10 +150,16 @@ const App = () => {
       personService
         .remove(event.target.id)
         .then(response => {
+          setMessageType(1)
+          setMessageText(`${event.target.name} was successufully deleted from server`)
+          setTimeout(() => { setMessageText(null) }, 5000)
           setPersons(persons.filter(person => person.id != id))
+
         })
         .catch(error => {
-          alert('Person already deleted')
+          setMessageType(0)
+          setMessageText(`Error deleting ${event.target.name} from server`)
+          setTimeout(() => { setMessageText(null) }, 5000)
           setPersons(persons.filter(person => person.id != id))
         })
     }
@@ -115,10 +168,13 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+
+      <Notification message={messageText} type={messageType} />
+
       <Filter handler={event => setNewSearch(event.target.value)} search={newSearch} />
 
       <h2>Add a new</h2>
-      <PersonForm persons={persons} setPersons={setPersons} />
+      <PersonForm persons={persons} setPersons={setPersons} setMessageText={setMessageText} setMessageType={setMessageType} />
 
       <h2>Numbers</h2>
       <Persons persons={persons} setPersons={setPersons} search={newSearch} handlerDelete={handlerDeletePerson} />
