@@ -1,7 +1,14 @@
 const express = require("express")
 const morgan = require("morgan")
+const cors = require("cors")
+
 const app = express()
 
+/*  whenever express gets an HTTP GET request it will first check if 
+the build directory contains a file corresponding to the request's 
+address. If a correct file is found, express will return it.*/
+//app.use(express.static('build'))
+app.use(cors())
 app.use(express.json())
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
 morgan.token('data', (request, response) => {
@@ -95,7 +102,7 @@ app.post("/api/persons", (request, response) => {
   response.json(persons)
 })
 
-PORT = 3001
+PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })

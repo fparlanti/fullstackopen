@@ -26,19 +26,16 @@ const PersonForm = ({ persons, setPersons, setMessageText, setMessageType }) => 
           .then(response => {
             setMessageType(1)
             setMessageText(`Number of ${changedPerson.name} modified`)
-            setTimeout(() => { setMessageText(null) }, 5000
-            )
-            setPersons(persons.map(person => person.id != id ? person : changedPerson))
+            setTimeout(() => { setMessageText(null) }, 5000)
+            setPersons(persons.map(person => person.id !== id ? person : changedPerson))
           })
           .catch(error => {
             setMessageType(0)
             setMessageText(`Error updating the phone number of ${changedPerson.name} `)
-            setTimeout(() => { setMessageText(null) }, 5000
-            )
+            setTimeout(() => { setMessageText(null) }, 5000)
           })
       }
     } else {
-      const id = persons.length + 1;
       const newPerson = { name: newName, number: newNumber }
       personService
         .create(newPerson)
@@ -46,7 +43,7 @@ const PersonForm = ({ persons, setPersons, setMessageText, setMessageType }) => 
           setMessageType(1)
           setMessageText(`Added ${newPerson.name}`)
           setTimeout(() => { setMessageText(null) }, 5000)
-          setPersons(persons.concat(returnedNotes))
+          setPersons(returnedNotes)
           setNewName('')
           setNewNumber('')
         })
@@ -107,7 +104,7 @@ const Notification = ({ message, type }) => {
     padding: '10px',
     marginBottom: '10px'
   }
-  if (type == 0) {
+  if (type === 0) {
     messageStyle = {
       color: 'red',
       background: 'lightgrey',
@@ -145,7 +142,7 @@ const App = () => {
   }, [])
 
   const handlerDeletePerson = (event) => {
-    const id = event.target.id
+    const id = Number(event.target.id)
     if (window.confirm(`Delete  ${event.target.name} ?`)) {
       personService
         .remove(event.target.id)
@@ -153,14 +150,13 @@ const App = () => {
           setMessageType(1)
           setMessageText(`${event.target.name} was successufully deleted from server`)
           setTimeout(() => { setMessageText(null) }, 5000)
-          setPersons(persons.filter(person => person.id != id))
-
+          setPersons(persons.filter(person => person.id !== id))
         })
         .catch(error => {
           setMessageType(0)
           setMessageText(`Error deleting ${event.target.name} from server`)
           setTimeout(() => { setMessageText(null) }, 5000)
-          setPersons(persons.filter(person => person.id != id))
+          setPersons(persons.filter(person => person.id !== id))
         })
     }
   }
