@@ -85,7 +85,7 @@ const Persons = (props) => {
   const { persons, search, handlerDelete } = props
   return (
     persons.map(function (person) {
-      if (search.length === 0 || (search.length > 0 && person.name.includes(search))) {
+      if (search.length === 0 || (search.length > 0 && person.name.toLowerCase().includes(search.toLowerCase()))) {
         return (
           <Person key={person.id} id={person.id} name={person.name} number={person.number} handlerDelete={handlerDelete} />
         )
