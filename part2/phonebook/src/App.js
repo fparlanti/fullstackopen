@@ -43,7 +43,7 @@ const PersonForm = ({ persons, setPersons, setMessageText, setMessageType }) => 
           setMessageType(1)
           setMessageText(`Added ${newPerson.name}`)
           setTimeout(() => { setMessageText(null) }, 5000)
-          setPersons(returnedNotes)
+          setPersons(persons.concat(returnedNotes))
           setNewName('')
           setNewNumber('')
         })
