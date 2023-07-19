@@ -83,6 +83,7 @@ const Person = ({ id, name, number, handlerDelete }) => {
 
 const Persons = (props) => {
   const { persons, search, handlerDelete } = props
+  console.log("persone",persons)
   return (
     persons.map(function (person) {
       if (search.length === 0 || (search.length > 0 && person.name.toLowerCase().includes(search.toLowerCase()))) {
