@@ -82,7 +82,7 @@ const Person = ({ id, name, number, handlerDelete }) => {
 }
 
 const Persons = (props) => {
-  const { persons, search, handlerDelete } = props
+  const { persons, search, handlerDelete } = props 
   console.log("persone",persons)
   return (
     persons.map(function (person) {
