@@ -63,7 +63,7 @@ app.get("/info", (request, response) => {
   Person.find({}).then(persons => {
     const num = persons.length
     const text = "<p>Phonebook has info for " + num + " people</p><p>" + date[Symbol.toPrimitive]('string') + "</p>"
-    response.send(text)
+    response.send(text) 
   })
 
 })
