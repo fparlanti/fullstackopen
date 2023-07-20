@@ -1,13 +1,23 @@
 GET http://localhost:3001/api/persons
 
 ###
-GET http://localhost:3001/api/persons/64b7f98cf6f694408bfd3386
+GET http://localhost:3001/api/persons/64b95745055d7e0e0b1571aa
 
 ###
 POST http://localhost:3001/api/persons/ HTTP/1.1
 content-type: application/json
 
-{
+{  
   "name": "John Smith",
-  "number": "123-456-7890"
+  "number": "123-456789"
+}
+###
+DELETE http://localhost:3001/api/persons/64b95ee795aad4ee4bfaaea6
+
+###
+PUT http://localhost:3001/api/persons/64b95745055d7e0e0b1571aa
+content-type: application/json
+
+{  "name": "John Smith",
+  "number": "123-456"
 }

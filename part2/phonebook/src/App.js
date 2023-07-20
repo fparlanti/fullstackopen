@@ -31,7 +31,7 @@ const PersonForm = ({ persons, setPersons, setMessageText, setMessageType }) => 
           })
           .catch(error => {
             setMessageType(0)
-            setMessageText(`Error updating the phone number of ${changedPerson.name} `)
+            setMessageText(error)
             setTimeout(() => { setMessageText(null) }, 5000)
           })
       }
@@ -49,7 +49,7 @@ const PersonForm = ({ persons, setPersons, setMessageText, setMessageType }) => 
         })
         .catch(error => {
           setMessageType(0)
-          setMessageText(`Error adding new phone entry from server`)
+          setMessageText(error.response.data.error)
           setTimeout(() => { setMessageText(null) }, 5000)
         })
 
@@ -142,7 +142,7 @@ const App = () => {
   }, [])
 
   const handlerDeletePerson = (event) => {
-    const id = Number(event.target.id)
+    const id = String(event.target.id)
     if (window.confirm(`Delete  ${event.target.name} ?`)) {
       personService
         .remove(event.target.id)
@@ -150,13 +150,13 @@ const App = () => {
           setMessageType(1)
           setMessageText(`${event.target.name} was successufully deleted from server`)
           setTimeout(() => { setMessageText(null) }, 5000)
-          setPersons(persons.filter(person => person.id !== id))
+          setPersons(persons.filter(person => String(person.id) !== id))
         })
         .catch(error => {
           setMessageType(0)
           setMessageText(`Error deleting ${event.target.name} from server`)
           setTimeout(() => { setMessageText(null) }, 5000)
-          setPersons(persons.filter(person => person.id !== id))
+          setPersons(persons.filter(person => String(person.id) !== id))
         })
     }
   }
