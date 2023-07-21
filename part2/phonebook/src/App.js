@@ -82,8 +82,9 @@ const Person = ({ id, name, number, handlerDelete }) => {
 }
 
 const Persons = (props) => {
-  const { persons, search, handlerDelete } = props 
+  const { persons, search, handlerDelete } = props
   return (
+    // eslint-disable-next-line array-callback-return
     persons.map(function (person) {
       if (search.length === 0 || (search.length > 0 && person.name.toLowerCase().includes(search.toLowerCase()))) {
         return (

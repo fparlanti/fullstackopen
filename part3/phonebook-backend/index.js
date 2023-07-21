@@ -1,18 +1,19 @@
-require("dotenv").config()
-const express = require("express")
-const morgan = require("morgan")
-const cors = require("cors")
-const Person = require("./models/person")
+require('dotenv').config()
+const express = require('express')
+const morgan = require('morgan')
+const cors = require('cors')
+const Person = require('./models/person')
 
 const app = express()
 
-/*  whenever express gets an HTTP GET request it will first check if 
-the build directory contains a file corresponding to the request's 
+/*  whenever express gets an HTTP GET request it will first check if
+the build directory contains a file corresponding to the request's
 address. If a correct file is found, express will return it.*/
 app.use(express.static('build'))
 app.use(cors())
 app.use(express.json())
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
+// eslint-disable-next-line no-unused-vars
 morgan.token('data', (request, response) => {
   return JSON.stringify(request.body)
 })
@@ -41,13 +42,13 @@ morgan.token('data', (request, response) => {
   }
 ]*/
 
-app.get("/api/persons", (request, response) => {
+app.get('/api/persons', (request, response) => {
   Person.find({}).then(persons => {
     response.json(persons)
   })
 })
 
-app.get("/api/persons/:id", (request, response, next) => {
+app.get('/api/persons/:id', (request, response, next) => {
 
   Person.findById(request.params.id)
     .then(query => {
@@ -60,20 +61,20 @@ app.get("/api/persons/:id", (request, response, next) => {
     .catch(error => next(error))
 })
 
-app.get("/info", (request, response) => {
+app.get('/info', (request, response) => {
   const date = new Date()
 
   Person.find({}).then(persons => {
     const num = persons.length
-    const text = "<p>Phonebook has info for " + num + " people</p><p>" + date[Symbol.toPrimitive]('string') + "</p>"
+    const text = '<p>Phonebook has info for ' + num + ' people</p><p>' + date[Symbol.toPrimitive]('string') + '</p>'
     response.send(text)
   })
 
 })
 
-app.delete("/api/persons/:id", (request, response, next) => {
+app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndDelete(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
@@ -83,7 +84,7 @@ app.delete("/api/persons/:id", (request, response, next) => {
   return Math.floor(Math.random() * 1000000)
 }*/
 
-app.post("/api/persons", (request, response, next) => {
+app.post('/api/persons', (request, response, next) => {
   const body = request.body
 
   if (body.name === undefined) {
@@ -117,7 +118,7 @@ app.put('/api/persons/:id', (request, response, next) => {
     number: body.number,
   }
 
-  Person.findByIdAndUpdate(request.params.id, person, {runValidators: true, context: 'query' })
+  Person.findByIdAndUpdate(request.params.id, person, { runValidators: true, context: 'query' })
     .then(updatedPerson => {
       response.json(updatedPerson)
     })
