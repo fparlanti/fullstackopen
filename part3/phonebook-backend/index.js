@@ -4,6 +4,9 @@ const morgan = require('morgan')
 const cors = require('cors')
 const Person = require('./models/person')
 
+const config = require('./utils/config')
+const logger = require('./utils/logger')
+
 const app = express()
 
 /*  whenever express gets an HTTP GET request it will first check if
@@ -145,8 +148,6 @@ const errorHandler = (error, request, response, next) => {
 // handler of requests with result to errors
 app.use(errorHandler) // this has to be the last loaded middleware.
 
-
-const PORT = process.env.PORT || 3001
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+app.listen(config.PORT, () => {
+  logger.info(`Server running on port ${config.PORT}`)
 })
